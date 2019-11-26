@@ -16,15 +16,25 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
-
+    view:
+      prefix: /
+      suffix: .jsp
 mybatis:
   mapper-locations: classpath:com.crazycode.mapper/*.xml
   type-aliases-package: com.crazycode.pojo
   config-location: classpath:mybatis/mybatis-config.xml
 #  configuration:
 #    map-underscore-to-camel-case: true
-
 server:
   port: 8888
   servlet:
-    context-path: /login
+    context-path: /crm
+#pagehelper:
+#  reasonable: true
+#  auto-dialect: mysql
+
+#mapper:
+#  mappers:
+#  identity: MYSQL
+pagehelper:
+  reasonable: true

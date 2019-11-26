@@ -1,17 +1,28 @@
 package com.crazycode.pojo;
 
+import com.crazycode.util.UUIdGenId;
 import lombok.Data;
+import tk.mybatis.mapper.annotation.KeySql;
+import tk.mybatis.mapper.annotation.NameStyle;
+import tk.mybatis.mapper.code.Style;
 
-import javax.persistence.Column;
+import javax.persistence.Id;
 
+/**
+ * Users
+ *
+ * @author Administrator
+ */
 @Data
+@NameStyle(Style.normal)
 public class Users {
-
+    @Id
+    @KeySql(genId = UUIdGenId.class)
     private String id;
     private String email;
     private String username;
     private String password;
-    @Column(name = "phoneNum")
+    // @Column(name = "phoneNum")
     private String phoneNum;
     private Long status;
 

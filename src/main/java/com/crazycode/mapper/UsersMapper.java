@@ -1,8 +1,8 @@
 package com.crazycode.mapper;
 
+import com.crazycode.mymapper.MyMapper;
 import com.crazycode.pojo.Users;
 import org.springframework.stereotype.Component;
-import tk.mybatis.mapper.common.Mapper;
 
 
 /**
@@ -11,7 +11,7 @@ import tk.mybatis.mapper.common.Mapper;
  * @author Administrator
  */
 @Component
-public interface UsersMapper extends Mapper<Users> {
+public interface UsersMapper extends MyMapper<Users> {
 
 
 }
