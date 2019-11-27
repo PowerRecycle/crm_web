@@ -11,6 +11,15 @@ import java.util.List;
  */
 public interface UsersService {
     /**
+     * 查询用户详情
+     *
+     * @param users
+     * @return
+     * @throws Exception
+     */
+    Users userDetails(Users users) throws Exception;
+
+    /**
      * 查询所有Users
      *
      * @return
@@ -19,7 +28,16 @@ public interface UsersService {
     List<Users> findAllUsers() throws Exception;
 
     /**
-     * 单个查询
+     * 单个查询:Id
+     *
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    Users findUserById(Users user) throws Exception;
+
+    /**
+     * 单个查询:姓名
      *
      * @param user
      * @return
@@ -46,7 +64,7 @@ public interface UsersService {
     int updateUser(Users user) throws Exception;
 
     /**
-     * 查
+     * 删
      *
      * @param user
      * @return

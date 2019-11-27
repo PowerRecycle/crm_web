@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crazycode.mapper.RoleMapper">
+    <select id="findRoleDetailsById" resultMap="r_p_map">
+        select id, roleName, roleDesc from role where id = #{id}
+    </select>
+    <resultMap id="r_p_map" type="role">
+        <id property="id" column="id"/>
+        <result property="roleName" column="roleName"/>
+        <result property="roleDesc" column="roleDesc"/>
+        <collection property="permissionList" javaType="list" ofType="permission"
+                     select="com.crazycode.mapper.PermissionMapper.selectPermissionByRoleId" column="id"/>
+    </resultMap>
+</mapper>
