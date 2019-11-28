@@ -1,9 +1,6 @@
 package com.crazycode.controller;
 
 import com.crazycode.pojo.Permission;
-import com.crazycode.pojo.Role;
-import com.crazycode.pojo.Users;
-import com.crazycode.pojo.UsersRole;
 import com.crazycode.service.PermissionService;
 import com.crazycode.service.RoleService;
 import com.crazycode.service.UsersRoleService;
@@ -13,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -26,13 +22,50 @@ import java.util.List;
 @Controller
 public class PermissionController {
     @Autowired
-    private UsersService usersService;
-    @Autowired
-    private RoleService roleService;
-    @Autowired
     private PermissionService permissionService;
-    @Autowired
-    private UsersRoleService usersRoleService;
+
+    /**
+     * 删除权限
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/deletePermission/{id}")
+    public String deletePermission(@PathVariable String id) throws Exception {
+        Permission permission = new Permission();
+        permission.setId(id);
+        permissionService.deletePermission(permission);
+        return "redirect:/findAllPermissions";
+    }
+
+    /**
+     * 添加权限
+     *
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/addPermission")
+    public String addPermission(Permission permission) throws Exception {
+        permissionService.insertPermission(permission);
+        return "redirect:/findAllPermissions";
+    }
+
+    /**
+     * 权限详情,根据角色id查找该角色所有权限详情,并跳转到权限详情页面
+     *
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/findPermissionDetailsById/{id}")
+    public ModelAndView findPermissionDetailsById(@PathVariable String id) throws Exception {
+        Permission permission = new Permission();
+        permission.setId(id);
+        permission = permissionService.findPermissionById(permission);
+        ModelAndView modelAndView = new ModelAndView("pages/permission-show");
+        modelAndView.addObject("permission", permission);
+        return modelAndView;
+    }
 
     /**
      * 查找所有权限,并跳转到权限管理页面

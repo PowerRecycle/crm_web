@@ -7,6 +7,9 @@ import tk.mybatis.mapper.code.Style;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * @author Administrator
+ */
 @Data
 @NameStyle(Style.normal)
 @Table(name = "role_permission")

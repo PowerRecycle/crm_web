@@ -57,11 +57,11 @@
             </a>
                 <ul class="treeview-menu">
                     <li id="system-setting5"><a
-                            href="${pageContext.request.contextPath}/pages/product-list1.jsp">
+                            href="${pageContext.request.contextPath}/findAllProducts">
                         <i class="fa fa-circle-o"></i> 产品管理
                     </a></li>
                     <li id="system-setting6"><a
-                            href="${pageContext.request.contextPath}/pages/orders-page-list.jsp"> <i
+                            href="${pageContext.request.contextPath}/findAllOrders"> <i
                             class="fa fa-circle-o"></i> 订单管理
                     </a></li>
                 </ul>

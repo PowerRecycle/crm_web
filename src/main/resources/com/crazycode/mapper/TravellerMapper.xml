@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crazycode.mapper.TravellerMapper">
+    <select id="findTravellersByOrderId" resultType="traveller">
+        select id, name, sex, phoneNum, credentialsType, credentialsNum, travellerType from traveller t,order_traveller o
+        where t.id = o.travellerId and o.orderId = #{id}
+    </select>
+</mapper>

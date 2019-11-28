@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crazycode.mapper.OrdersMapper">
+    <select id="findAllOrdersAndProducts" resultMap="orders_products_map">
+        select id, orderNum, orderTime, peopleCount, orderDesc, payType, orderStatus, productId, memberId from orders
+    </select>
+    <resultMap id="orders_products_map" type="orders">
+        <id property="id" column="id"/>
+        <result property="orderNum" column="orderNum"/>
+        <result property="orderTime" column="orderTime"/>
+        <result property="peopleCount" column="peopleCount"/>
+        <result property="orderDesc" column="orderNum"/>
+        <result property="payType" column="payType"/>
+        <result property="orderStatus" column="orderStatus"/>
+        <result property="productId" column="productId"/>
+        <result property="memberId" column="memberId"/>
+        <association property="product" javaType="product"
+                     select="com.crazycode.mapper.ProductMapper.selectByPrimaryKey"
+                     column="productId"/>
+    </resultMap>
+
+    <select id="findOrderAndProductsAndMembersAndTravellersByOrderId" resultMap="order_product_member_travellers_map">
+        select id, orderNum, orderTime, peopleCount, orderDesc, payType, orderStatus, productId, memberId from orders where id = #{id}
+    </select>
+    <resultMap id="order_product_member_travellers_map" type="orders">
+        <id property="id" column="id"/>
+        <result property="orderNum" column="orderNum"/>
+        <result property="orderTime" column="orderTime"/>
+        <result property="peopleCount" column="peopleCount"/>
+        <result property="orderDesc" column="orderNum"/>
+        <result property="payType" column="payType"/>
+        <result property="orderStatus" column="orderStatus"/>
+        <result property="productId" column="productId"/>
+        <result property="memberId" column="memberId"/>
+        <association property="product" javaType="product"
+                     select="com.crazycode.mapper.ProductMapper.selectByPrimaryKey"
+                     column="productId"/>
+        <association property="member" javaType="member"
+                     select="com.crazycode.mapper.MemberMapper.selectByPrimaryKey" column="memberId"/>
+        <collection property="travellers" javaType="list" ofType="Traveller"
+                    select="com.crazycode.mapper.TravellerMapper.findTravellersByOrderId" column="id"/>
+    </resultMap>
+</mapper>
+

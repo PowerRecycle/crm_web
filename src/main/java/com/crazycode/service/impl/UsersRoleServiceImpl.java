@@ -63,7 +63,7 @@ public class UsersRoleServiceImpl implements UsersRoleService {
      */
     @Override
     public int updateUsersRole(UsersRole usersRole) throws Exception {
-        return 0;
+        return usersRoleMapper.updateByPrimaryKey(usersRole);
     }
 
     /**
@@ -75,6 +75,6 @@ public class UsersRoleServiceImpl implements UsersRoleService {
      */
     @Override
     public int deleteUsersRole(UsersRole usersRole) throws Exception {
-        return 0;
+        return usersRoleMapper.delete(usersRole);
     }
 }

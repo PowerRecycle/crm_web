@@ -187,12 +187,12 @@
                 <li><a href="${pageContext.request.contextPath}/index.jsp"><i
                         class="fa fa-dashboard"></i> 首页</a></li>
                 <li><a
-                        href="${pageContext.request.contextPath}/pages/user-list.jsp">用户管理</a></li>
+                        href="${pageContext.request.contextPath}/usersList/1/5">用户管理</a></li>
                 <li class="active">用户表单</li>
             </ol>
         </section>
         <!-- 内容头部 /-->
-        <form action="${pageContext.request.contextPath}/save"
+        <form action="${pageContext.request.contextPath}/addUser"
               method="post">
             <!-- 正文区域 -->
             <section class="content"> <!--产品信息-->

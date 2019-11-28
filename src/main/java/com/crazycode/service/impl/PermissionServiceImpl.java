@@ -79,12 +79,12 @@ public class PermissionServiceImpl implements PermissionService {
     /**
      * 删
      *
-     * @param role
+     * @param permission
      * @return
      * @throws Exception
      */
     @Override
-    public int deletePermission(Permission role) throws Exception {
-        return permissionMapper.deleteByPrimaryKey(permissionMapper);
+    public int deletePermission(Permission permission) throws Exception {
+        return permissionMapper.deleteByPrimaryKey(permission);
     }
 }

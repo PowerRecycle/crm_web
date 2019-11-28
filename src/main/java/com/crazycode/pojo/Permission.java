@@ -8,6 +8,9 @@ import tk.mybatis.mapper.code.Style;
 
 import javax.persistence.Id;
 
+/**
+ * @author Administrator
+ */
 @Data
 @NameStyle(Style.normal)
 public class Permission {

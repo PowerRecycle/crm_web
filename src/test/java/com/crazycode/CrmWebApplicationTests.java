@@ -1,14 +1,8 @@
 package com.crazycode;
 
 import com.crazycode.mapper.RoleMapper;
-import com.crazycode.pojo.Permission;
-import com.crazycode.pojo.Role;
-import com.crazycode.pojo.Users;
-import com.crazycode.pojo.UsersRole;
-import com.crazycode.service.PermissionService;
-import com.crazycode.service.RoleService;
-import com.crazycode.service.UsersRoleService;
-import com.crazycode.service.UsersService;
+import com.crazycode.pojo.*;
+import com.crazycode.service.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,6 +24,23 @@ class CrmWebApplicationTests {
     private UsersRoleService usersRoleService;
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private OrdersService ordersService;
+
+    @Test
+    void contextLoads7() throws Exception {
+        List<Orders> allOrders = ordersService.findAllOrders();
+        for (Orders allOrder : allOrders) {
+            System.out.println(allOrder);
+        }
+    }
+
+    @Test
+    void contextLoads6() throws Exception {
+        UsersRole usersRole = new UsersRole();
+        usersRole.setUserId("0bf31c8f-a51b-473c-8e1b-62be2c9fa3d8");
+        System.out.println(usersRoleService.deleteUsersRole(usersRole));
+    }
 
     @Test
     void contextLoads5() throws Exception {
