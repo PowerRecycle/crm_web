@@ -18,7 +18,7 @@ public class OrdersController {
     @Autowired
     private OrdersService ordersService;
 
-    @GetMapping("findOrderById/{id}")
+    @GetMapping("/findOrderById/{id}")
     public ModelAndView findOrderById(@PathVariable String id) throws Exception {
         Orders orders = ordersService.findOrderById(id);
         ModelAndView modelAndView = new ModelAndView("pages/orders-show");

@@ -13,5 +13,15 @@ import tk.mybatis.mapper.common.Mapper;
 @Component
 public interface UsersMapper extends Mapper<Users> {
 
+    /**
+     * 查询所有用户角色权限
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    Users findAllUsersAndRolesAndPermissionsByUserId(String id) throws Exception;
+
+
 
 }

@@ -11,6 +11,15 @@ import java.util.List;
  */
 public interface UsersService {
     /**
+     * 查询所有用户角色权限
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    Users findAllUsersAndRolesAndPermissionsByUserId(String id) throws Exception;
+
+    /**
      * 查询用户详情
      *
      * @param users

@@ -3,5 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.crazycode.mapper.UsersMapper">
-
+    <select id="findAllUsersAndRolesAndPermissionsByUserId" resultMap="u_r_p_map">
+    select id, email, username, PASSWORD, phoneNum, STATUS from users where id = #{id}
+    </select>
+    <resultMap id="u_r_p_map" type="users">
+        <id property="id" column="id"/>
+        <collection property="roleList" javaType="list" ofType="role"
+                    select="com.crazycode.mapper.RoleMapper.findRolesAndPermissionsByUserId" column="id"/>
+    </resultMap>
 </mapper>

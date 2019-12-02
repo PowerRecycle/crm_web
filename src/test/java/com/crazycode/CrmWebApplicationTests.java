@@ -1,8 +1,12 @@
 package com.crazycode;
 
 import com.crazycode.mapper.RoleMapper;
+import com.crazycode.mapper.UsersMapper;
 import com.crazycode.pojo.*;
 import com.crazycode.service.*;
+import com.crazycode.util.MD5Util;
+import lombok.AllArgsConstructor;
+import org.apache.shiro.SecurityUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,6 +30,23 @@ class CrmWebApplicationTests {
     private RoleMapper roleMapper;
     @Autowired
     private OrdersService ordersService;
+    @Autowired
+    private UsersMapper usersMapper;
+
+    @Test
+    void contextLoads9() throws Exception {
+        Users user = usersMapper.findAllUsersAndRolesAndPermissionsByUserId("a151fe9f-9f1e-11e9-a715-74d02bd4fd82");
+        System.out.println(user);
+        // System.out.println(SecurityUtils.getSubject().getPrincipal());
+
+    }
+
+    @Test
+    void contextLoads8() throws Exception {
+        List<Users> allUsers = usersService.findAllUsers();
+        System.out.println(allUsers);
+
+    }
 
     @Test
     void contextLoads7() throws Exception {
@@ -87,7 +108,9 @@ class CrmWebApplicationTests {
     void contextLoads() throws Exception {
         // System.out.println(dataSource.getConnection());
         for (Users allUser : usersService.findAllUsers()) {
-            System.out.println(allUser);
+            allUser.setPassword("123456");
+            allUser.setPassword(MD5Util.md5Hash(allUser));
+            usersService.updateUser(allUser);
         }
         /*for (int i = 0; i < 20; i++) {
             Users users = new Users();

@@ -38,3 +38,7 @@ server:
 #  identity: MYSQL
 pagehelper:
   reasonable: true
+shiro:
+  loginUrl: /index.jsp
+  successUrl: /pages/main.jsp
+  unauthorizedUrl: /403.jsp

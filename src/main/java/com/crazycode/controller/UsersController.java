@@ -8,6 +8,9 @@ import com.crazycode.service.UsersRoleService;
 import com.crazycode.service.UsersService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.*;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -131,9 +134,26 @@ public class UsersController {
      */
     @PostMapping("/login.do")
     public ModelAndView login(Users user, HttpSession session) throws Exception {
-        Users userByName = usersService.findUserByName(user);
         ModelAndView modelAndView = new ModelAndView();
-        if (userByName != null) {
+        //获取登录的主体对象
+        Subject currentUser = SecurityUtils.getSubject();
+        String info = null;
+        if (!currentUser.isAuthenticated()) {
+            UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
+            try {
+                currentUser.login(token);
+            } catch (UnknownAccountException uae) {
+                info = "用户名不正确";
+            } catch (IncorrectCredentialsException ice) {
+                info = "密码不正确";
+            } catch (LockedAccountException lae) {
+                info = "账号被锁定";
+            } catch (AuthenticationException ae) {
+                info = "联系管理员";
+            }
+        }
+        if (info == null) {
+            Users userByName = usersService.findUserByName(user);
             modelAndView.setViewName("pages/main");
             session.setAttribute("user", userByName);
         } else {

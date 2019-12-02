@@ -9,6 +9,7 @@ import com.crazycode.service.PermissionService;
 import com.crazycode.service.RoleService;
 import com.crazycode.service.UsersRoleService;
 import com.crazycode.service.UsersService;
+import com.crazycode.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,18 @@ public class UsersServiceImpl implements UsersService {
     private PermissionService permissionService;
     @Autowired
     private UsersRoleService usersRoleService;
+
+    /**
+     * 查询所有用户角色权限
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Users findAllUsersAndRolesAndPermissionsByUserId(String id) throws Exception {
+        return usersMapper.findAllUsersAndRolesAndPermissionsByUserId(id);
+    }
 
     /**
      * 查询用户详情
@@ -108,6 +121,7 @@ public class UsersServiceImpl implements UsersService {
      */
     @Override
     public int insertUser(Users user) throws Exception {
+        user.setPassword(MD5Util.md5Hash(user));
         return usersMapper.insert(user);
     }
 
