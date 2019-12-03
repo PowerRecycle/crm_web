@@ -167,11 +167,11 @@
 <div class="wrapper">
 
     <!-- 页面头部 -->
-    <jsp:include page="header.jsp"></jsp:include>
+    <jsp:include page="header.jsp"/>
     <!-- 页面头部 /-->
 
     <!-- 导航侧栏 -->
-    <jsp:include page="aside.jsp"></jsp:include>
+    <jsp:include page="aside.jsp"/>
     <!-- 导航侧栏 /-->
 
     <!-- 内容区域 -->
@@ -183,7 +183,7 @@
                 角色管理 <small>全部角色</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="${pageContext.request.contextPath}/index.jsp"><i
+                <li><a href="${pageContext.request.contextPath}/pages/main.jsp"><i
                         class="fa fa-dashboard"></i> 首页</a></li>
                 <li><a href="${pageContext.request.contextPath}/findAllRoles2">角色管理</a></li>
 

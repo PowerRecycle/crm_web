@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -244,9 +245,11 @@
                                     <button type="button" class="btn btn-default" title="新建">
                                         <i class="fa fa-file-o"></i> 新建
                                     </button>
-                                    <button type="button" class="btn btn-default" title="删除">
-                                        <i class="fa fa-trash-o"></i> 删除
-                                    </button>
+                                    <shiro:hasPermission name="order:deleteOrder">
+                                        <button type="button" class="btn btn-default" title="删除">
+                                            <i class="fa fa-trash-o"></i> 删除
+                                        </button>
+                                    </shiro:hasPermission>
                                     <button type="button" class="btn btn-default" title="开启">
                                         <i class="fa fa-check"></i> 开启
                                     </button>

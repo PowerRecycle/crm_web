@@ -76,4 +76,30 @@ public class ProductServiceImpl implements ProductService {
     public int deleteProduct(String id) throws Exception {
         return productMapper.deleteByPrimaryKey(id);
     }
+
+    /**
+     * 开启
+     *
+     * @param product
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public int openProduct(Product product) throws Exception {
+        product.setProductStatus(1L);
+        return productMapper.updateByPrimaryKey(product);
+    }
+
+    /**
+     * 关闭
+     *
+     * @param product
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public int closeProduct(Product product) throws Exception {
+        product.setProductStatus(0L);
+        return productMapper.updateByPrimaryKey(product);
+    }
 }

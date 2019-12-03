@@ -263,7 +263,7 @@
             </h1>
             <ol class="breadcrumb">
                 <li><a href="${pageContext.request.contextPath}/index.jsp"><i class="fa fa-dashboard"></i> 首页</a></li>
-                <li><a href="${pageContext.request.contextPath}/pages/user-list.jsp">用户管理</a></li>
+                <li><a href="${pageContext.request.contextPath}/pages/usersList/1/5">用户管理</a></li>
                 <li class="active">用户详情</li>
             </ol>
         </section>

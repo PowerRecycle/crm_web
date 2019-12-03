@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%-- <%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %> --%>
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -29,26 +30,28 @@
                         class="fa fa-angle-left pull-right"></i>
 				</span>
             </a>
-                <ul class="treeview-menu">
-                    <li id="system-setting1">
-                        <a href="${pageContext.request.contextPath}/usersList/1/5"> <i
-                                class="fa fa-circle-o"></i> 用户管理
-                        </a>
-                    </li>
-                    <li id="system-setting2"><a
-                            href="${pageContext.request.contextPath}/findAllRoles2"> <i
-                            class="fa fa-circle-o"></i> 角色管理
-                    </a></li>
-                    <li id="system-setting3"><a
-                            href="${pageContext.request.contextPath}/findAllPermissions">
-                        <i class="fa fa-circle-o"></i> 资源权限管理
-                    </a></li>
-                    <li id="system-setting4">
-                        <a href="${pageContext.request.contextPath}/pages/syslog-list.jsp"> <i
-                                class="fa fa-circle-o"></i> 访问日志
-                        </a>
-                    </li>
-                </ul>
+                <shiro:hasRole name="admin">
+                    <ul class="treeview-menu">
+                        <li id="system-setting1">
+                            <a href="${pageContext.request.contextPath}/usersList/1/5"> <i
+                                    class="fa fa-circle-o"></i> 用户管理
+                            </a>
+                        </li>
+                        <li id="system-setting2"><a
+                                href="${pageContext.request.contextPath}/findAllRoles2"> <i
+                                class="fa fa-circle-o"></i> 角色管理
+                        </a></li>
+                        <li id="system-setting3"><a
+                                href="${pageContext.request.contextPath}/findAllPermissions">
+                            <i class="fa fa-circle-o"></i> 资源权限管理
+                        </a></li>
+                        <li id="system-setting4">
+                            <a href="${pageContext.request.contextPath}/findAllSyslogs"> <i
+                                    class="fa fa-circle-o"></i> 访问日志
+                            </a>
+                        </li>
+                    </ul>
+                </shiro:hasRole>
             </li>
             <li class="treeview"><a href="#"> <i class="fa fa-cube"></i>
                 <span>基础数据</span> <span class="pull-right-container"> <i
@@ -56,14 +59,18 @@
 				</span>
             </a>
                 <ul class="treeview-menu">
-                    <li id="system-setting5"><a
-                            href="${pageContext.request.contextPath}/findAllProducts">
-                        <i class="fa fa-circle-o"></i> 产品管理
-                    </a></li>
-                    <li id="system-setting6"><a
-                            href="${pageContext.request.contextPath}/findAllOrders"> <i
-                            class="fa fa-circle-o"></i> 订单管理
-                    </a></li>
+                    <shiro:hasAnyRoles name="admin,productManager,Java开发初级程序员">
+                        <li id="system-setting5"><a
+                                href="${pageContext.request.contextPath}/findAllProducts">
+                            <i class="fa fa-circle-o"></i> 产品管理
+                        </a></li>
+                    </shiro:hasAnyRoles>
+                    <shiro:hasAnyRoles name="admin,orderManager">
+                        <li id="system-setting6"><a
+                                href="${pageContext.request.contextPath}/findAllOrders"> <i
+                                class="fa fa-circle-o"></i> 订单管理
+                        </a></li>
+                    </shiro:hasAnyRoles>
                 </ul>
             </li>
 

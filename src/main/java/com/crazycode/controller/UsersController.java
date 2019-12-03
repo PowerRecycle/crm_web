@@ -10,6 +10,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,7 @@ public class UsersController {
     @Autowired
     private UsersRoleService usersRoleService;
 
+
     /**
      * "保存"按钮:用户添加角色
      *
@@ -44,6 +46,7 @@ public class UsersController {
      * @return
      * @throws Exception
      */
+    @RequiresRoles("admin")
     @PostMapping("/addRoleToUser")
     public String addUserRole(@RequestParam(value = "ids") List<String> ids, String userId) throws Exception {
         UsersRole usersRole = new UsersRole();
@@ -65,6 +68,7 @@ public class UsersController {
      * @return
      * @throws Exception
      */
+    @RequiresRoles(value = {"admin"})
     @GetMapping("/findAllRoles/{id}")
     public ModelAndView findAllRoles(@PathVariable String id) throws Exception {
         List<Role> allRoles = roleService.findAllRoles();
@@ -83,6 +87,7 @@ public class UsersController {
      * @return
      * @throws Exception
      */
+    @RequiresRoles(value = {"admin"})
     @PostMapping("/addUser")
     public String addUser(Users users) throws Exception {
         usersService.insertUser(users);
@@ -96,6 +101,7 @@ public class UsersController {
      * @return
      * @throws Exception
      */
+    @RequiresRoles(value = {"admin"})
     @GetMapping("/userDetails/{id}")
     public ModelAndView userDetails(Users user) throws Exception {
         user = usersService.userDetails(user);
@@ -113,6 +119,7 @@ public class UsersController {
      * @return
      * @throws Exception
      */
+    @RequiresRoles(value = {"admin"})
     @GetMapping("/usersList/{pageNum}/{pageSize}")
     public ModelAndView usersList(@PathVariable("pageNum") Integer pageNum, @PathVariable("pageSize") Integer pageSize, HttpSession session) throws Exception {
         PageHelper.startPage(pageNum, pageSize);
@@ -122,6 +129,17 @@ public class UsersController {
         modelAndView.addObject("users", allUsers);
         modelAndView.addObject("pageInfo", pageInfo);
         return modelAndView;
+    }
+
+    /**
+     * 登出
+     *
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/logout.do")
+    public String logout() throws Exception {
+        return "index";
     }
 
     /**

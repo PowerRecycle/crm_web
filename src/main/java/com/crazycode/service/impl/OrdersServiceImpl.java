@@ -79,4 +79,30 @@ public class OrdersServiceImpl implements OrdersService {
     public int deleteOrder(String id) throws Exception {
         return ordersMapper.deleteByPrimaryKey(id);
     }
+
+    /**
+     * 开启
+     *
+     * @param order
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public int openOrder(Orders order) throws Exception {
+        order.setOrderStatus(1L);
+        return ordersMapper.updateByPrimaryKey(order);
+    }
+
+    /**
+     * 关闭
+     *
+     * @param order
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public int closeOrder(Orders order) throws Exception {
+        order.setOrderStatus(0L);
+        return ordersMapper.updateByPrimaryKey(order);
+    }
 }

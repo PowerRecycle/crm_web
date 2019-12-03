@@ -4,12 +4,13 @@ import com.crazycode.realm.UserRealm;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.crypto.hash.Md5Hash;
-import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.mgt.SessionsSecurityManager;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -56,8 +57,9 @@ public class ShiroConfig {
         // filterChainDefinitionMap.put("/login", "anon");
         // filterChainDefinitionMap.put("/login.jsp", "anon");
         filterChainDefinitionMap.put("/login.do", "anon");
+        filterChainDefinitionMap.put("/logout.do", "logout");
         filterChainDefinitionMap.put("/**", "authc");
-        filterChainDefinitionMap.put("/pages/product*", "roles[productManager]");
+        /*filterChainDefinitionMap.put("/pages/product*", "roles[productManager]");
         filterChainDefinitionMap.put("/pages/order*", "roles[orderManager]");
         filterChainDefinitionMap.put("/**", "roles[admin]");
         filterChainDefinitionMap.put("/", "permissions[order:deleteOrder]");
@@ -65,7 +67,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/", "permissions[order:deleteOrder1]");
         filterChainDefinitionMap.put("/", "permissions[product:delete]");
         filterChainDefinitionMap.put("/findAllOrders", "permissions[order:queryOrdersInfo]");
-        filterChainDefinitionMap.put("/findOrderById/**", "permissions[order:queryOrdersInfo]");
+        filterChainDefinitionMap.put("/findOrderById/**", "permissions[order:queryOrdersInfo]");*/
         shiroFilterChainDefinition.addPathDefinitions(filterChainDefinitionMap);
         return shiroFilterChainDefinition;
     }
@@ -86,5 +88,27 @@ public class ShiroConfig {
         //设置加密次数
         credentialsMatcher.setHashIterations(1024);
         return credentialsMatcher;
+    }
+
+    /**
+     * 开启Shiro注解(如@RequiresRoles,@RequiresPermissions),
+     * 需借助SpringAOP扫描使用Shiro注解的类,并在必要时进行安全逻辑验证
+     * 配置以下两个bean(DefaultAdvisorAutoProxyCreator和AuthorizationAttributeSourceAdvisor)
+     */
+    @Bean
+    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+        advisorAutoProxyCreator.setProxyTargetClass(true);
+        return advisorAutoProxyCreator;
+    }
+
+    /**
+     * 开启aop注解支持
+     */
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SessionsSecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+        return authorizationAttributeSourceAdvisor;
     }
 }

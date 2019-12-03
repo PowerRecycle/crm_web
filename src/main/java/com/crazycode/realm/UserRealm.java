@@ -56,7 +56,7 @@ public class UserRealm extends AuthorizingRealm {
             throw new UnknownAccountException();
         }
         ByteSource salt = ByteSource.Util.bytes(username);
-        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), salt, "1024");
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), salt, getName());
         return authenticationInfo;
     }
 }

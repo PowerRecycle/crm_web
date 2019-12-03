@@ -148,7 +148,7 @@
                 资源权限管理 <small>全部权限</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="${pageContext.request.contextPath}/index.jsp"><i
+                <li><a href="${pageContext.request.contextPath}/pages/main.jsp"><i
                         class="fa fa-dashboard"></i> 首页</a></li>
                 <li><a
                         href="${pageContext.request.contextPath}/findAllPermissions">资源权限管理</a></li>

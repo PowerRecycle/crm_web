@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
 import java.util.List;
 
 @SpringBootTest
@@ -32,6 +33,12 @@ class CrmWebApplicationTests {
     private OrdersService ordersService;
     @Autowired
     private UsersMapper usersMapper;
+
+    @Test
+    void contextLoads10() throws Exception {
+        System.out.println((new Timestamp(System.currentTimeMillis())).toString());
+
+    }
 
     @Test
     void contextLoads9() throws Exception {

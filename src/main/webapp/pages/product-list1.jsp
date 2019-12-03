@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html>
 
 <head>
@@ -120,6 +121,30 @@
             });
         });
     </script>
+    <script>
+        var $newUrl1, $newUrl2, $form;
+        $(function () {
+            $form = $("#myForm");
+            $newUrl1 = "${pageContext.request.contextPath}/openProducts";
+            $("#checkOpen1").click(function () {
+                $form.attr("action", $newUrl1);
+                $form.submit();
+            })
+            $("#checkOpen2").click(function () {
+                $form.attr('action', $newUrl1);
+                $form.submit();
+            })
+            $newUrl2 = "${pageContext.request.contextPath}/closeProducts";
+            $("#checkClose1").click(function () {
+                $form.attr("action", $newUrl2);
+                $form.submit();
+            })
+            $("#checkClose2").click(function () {
+                $form.attr('action', $newUrl2);
+                $form.submit();
+            })
+        })
+    </script>
 </head>
 <body class="hold-transition skin-purple sidebar-mini">
 <div class="wrapper">
@@ -140,7 +165,8 @@
                 <small>数据列表</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="${pageContext.request.contextPath}/index.jsp"><i class="fa fa-dashboard"></i> 首页</a></li>
+                <li><a href="${pageContext.request.contextPath}/pages/main.jsp"><i class="fa fa-dashboard"></i> 首页</a>
+                </li>
                 <li><a href="${pageContext.request.contextPath}/findAllProducts">数据管理</a></li>
                 <li class="active">数据列表</li>
             </ol>
@@ -153,113 +179,127 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">列表</h3>
                 </div>
-                <div class="box-body">
-                    <!-- 数据表格 -->
-                    <div class="table-box">
-                        <!--工具栏-->
-                        <div class="pull-left">
-                            <div class="form-group form-inline">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default" title="新建"
-                                            onclick="location.href='${pageContext.request.contextPath}/pages/product-add.jsp'">
-                                        <i class="fa fa-file-o"></i> 新建
-                                    </button>
-                                    <button type="button" class="btn btn-default" title="删除"><i
-                                            class="fa fa-trash-o"></i> 删除
-                                    </button>
-                                    <button type="button" class="btn btn-default" title="开启"><i class="fa fa-check"></i>
-                                        开启
-                                    </button>
-                                    <button type="button" class="btn btn-default" title="屏蔽"><i class="fa fa-ban"></i>
-                                        屏蔽
-                                    </button>
-                                    <button type="button" class="btn btn-default" title="刷新"
-                                            onclick="location.reload()"><i
-                                            class="fa fa-refresh"></i> 刷新
-                                    </button>
+                <form action="${pageContext.request.contextPath}/deleteProducts" method="post" id="myForm">
+                    <div class="box-body">
+                        <!-- 数据表格 -->
+                        <div class="table-box">
+                            <!--工具栏-->
+                            <div class="pull-left">
+                                <div class="form-group form-inline">
+                                    <div class="btn-group">
+                                        <shiro:hasPermission name="product:add">
+                                            <button type="button" class="btn btn-default" title="新建"
+                                                    onclick="location.href='${pageContext.request.contextPath}/pages/product-add.jsp'">
+                                                <i class="fa fa-file-o"></i> 新建
+                                            </button>
+                                        </shiro:hasPermission>
+                                        <shiro:hasPermission name="product:delete">
+                                            <button type="submit" class="btn btn-default" title="删除"><i
+                                                    class="fa fa-trash-o"></i> 删除
+                                            </button>
+                                        </shiro:hasPermission>
+                                        <button type="button" class="btn btn-default" title="开启" id="checkOpen1"><i
+                                                class="fa fa-check"></i>
+                                            开启
+                                        </button>
+                                        <button type="button" class="btn btn-default" title="屏蔽" id="checkClose1"><i
+                                                class="fa fa-ban"></i>
+                                            屏蔽
+                                        </button>
+                                        <button type="button" class="btn btn-default" title="刷新"
+                                                onclick="location.reload()"><i
+                                                class="fa fa-refresh"></i> 刷新
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="box-tools pull-right">
-                            <div class="has-feedback">
-                                <input type="text" class="form-control input-sm" placeholder="搜索">
-                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                            <div class="box-tools pull-right">
+                                <div class="has-feedback">
+                                    <input type="text" class="form-control input-sm" placeholder="搜索">
+                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                </div>
                             </div>
-                        </div>
-                        <!--工具栏/-->
-                        <!--数据列表-->
-                        <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
-                            <thead>
-                            <tr>
-                                <th class="" style="padding-right:0px;">
-                                    <input id="selall" type="checkbox" class="icheckbox_square-blue">
-                                </th>
-                                <th class="sorting_asc">ID</th>
-                                <th class="sorting_desc">编号</th>
-                                <th class="sorting_asc sorting_asc_disabled">产品名称</th>
-                                <th class="sorting_desc sorting_desc_disabled">出发城市</th>
-                                <th class="sorting">出发时间</th>
-                                <th class="text-center sorting">产品价格</th>
-                                <th class="text-center sorting">产品描述</th>
-                                <th class="text-center sorting">状态</th>
-                                <th class="text-center">操作</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${products}" var="product">
+                            <!--工具栏/-->
+                            <!--数据列表-->
+                            <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+                                <thead>
                                 <tr>
-                                    <td><input name="ids" type="checkbox"></td>
-                                    <td>${product.id}</td>
-                                    <td>${product.productNum}</td>
-                                    <td>${product.productName}</td>
-                                    <td>${product.cityName}</td>
-                                    <td>${product.departureTime}</td>
-                                    <td class="text-center">${product.productPrice}</td>
-                                    <td class="text-center">${product.productDesc}</td>
-                                    <td class="text-center">${product.productStatus}</td>
-                                    <td class="text-center">
-                                        <button type="button" class="btn bg-olive btn-xs">订单</button>
-                                        <button type="button" class="btn bg-olive btn-xs">详情</button>
-                                        <button type="button" class="btn bg-olive btn-xs">编辑</button>
-                                    </td>
+                                    <th class="" style="padding-right:0px;">
+                                        <input id="selall" type="checkbox" class="icheckbox_square-blue">
+                                    </th>
+                                    <th class="sorting_asc">ID</th>
+                                    <th class="sorting_desc">编号</th>
+                                    <th class="sorting_asc sorting_asc_disabled">产品名称</th>
+                                    <th class="sorting_desc sorting_desc_disabled">出发城市</th>
+                                    <th class="sorting">出发时间</th>
+                                    <th class="text-center sorting">产品价格</th>
+                                    <th class="text-center sorting">产品描述</th>
+                                    <th class="text-center sorting">状态</th>
+                                    <th class="text-center">操作</th>
                                 </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                        <!--数据列表/-->
-                        <!--工具栏-->
-                        <div class="pull-left">
-                            <div class="form-group form-inline">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default" title="新建"><i
-                                            class="fa fa-file-o"></i> 新建
-                                    </button>
-                                    <button type="button" class="btn btn-default" title="删除"><i
-                                            class="fa fa-trash-o"></i> 删除
-                                    </button>
-                                    <button type="button" class="btn btn-default" title="开启"><i class="fa fa-check"></i>
-                                        开启
-                                    </button>
-                                    <button type="button" class="btn btn-default" title="屏蔽"><i class="fa fa-ban"></i>
-                                        屏蔽
-                                    </button>
-                                    <button type="button" class="btn btn-default" title="刷新"
-                                            onclick="location.reload()"><i
-                                            class="fa fa-refresh"></i> 刷新
-                                    </button>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${products}" var="product">
+                                    <tr>
+                                        <td><input name="ids" type="checkbox" value="${product.id}"></td>
+                                        <td>${product.id}</td>
+                                        <td>${product.productNum}</td>
+                                        <td>${product.productName}</td>
+                                        <td>${product.cityName}</td>
+                                        <td>${product.departureTime}</td>
+                                        <td class="text-center">${product.productPrice}</td>
+                                        <td class="text-center">${product.productDesc}</td>
+                                        <td class="text-center">${product.productStatus}</td>
+                                        <td class="text-center">
+                                            <button type="button" class="btn bg-olive btn-xs">订单</button>
+                                            <button type="button" class="btn bg-olive btn-xs">详情</button>
+                                            <button type="button" class="btn bg-olive btn-xs">编辑</button>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                            <!--数据列表/-->
+                            <!--工具栏-->
+                            <div class="pull-left">
+                                <div class="form-group form-inline">
+                                    <div class="btn-group">
+                                        <shiro:hasPermission name="product:add">
+                                            <button type="button" class="btn btn-default" title="新建"><i
+                                                    class="fa fa-file-o"></i> 新建
+                                            </button>
+                                        </shiro:hasPermission>
+                                        <shiro:hasPermission name="product:delete">
+                                            <button type="submit" class="btn btn-default" title="删除"><i
+                                                    class="fa fa-trash-o"></i> 删除
+                                            </button>
+                                        </shiro:hasPermission>
+                                        <button type="button" class="btn btn-default" title="开启" id="checkOpen2"><i
+                                                class="fa fa-check"></i>
+                                            开启
+                                        </button>
+                                        <button type="button" class="btn btn-default" title="屏蔽" id="checkClose2"><i
+                                                class="fa fa-ban"></i>
+                                            屏蔽
+                                        </button>
+                                        <button type="button" class="btn btn-default" title="刷新"
+                                                onclick="location.reload()"><i
+                                                class="fa fa-refresh"></i> 刷新
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="box-tools pull-right">
-                            <div class="has-feedback">
-                                <input type="text" class="form-control input-sm" placeholder="搜索">
-                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                            <div class="box-tools pull-right">
+                                <div class="has-feedback">
+                                    <input type="text" class="form-control input-sm" placeholder="搜索">
+                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                </div>
                             </div>
+                            <!--工具栏/-->
                         </div>
-                        <!--工具栏/-->
+                        <!-- 数据表格 /-->
                     </div>
-                    <!-- 数据表格 /-->
-                </div>
+                </form>
                 <!-- /.box-body -->
                 <!-- .box-footer-->
                 <div class="box-footer">

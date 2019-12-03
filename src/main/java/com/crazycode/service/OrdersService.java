@@ -1,6 +1,7 @@
 package com.crazycode.service;
 
 import com.crazycode.pojo.Orders;
+import com.crazycode.pojo.Product;
 
 import java.util.List;
 
@@ -51,6 +52,24 @@ public interface OrdersService {
      * @throws Exception
      */
     int deleteOrder(String id) throws Exception;
+
+    /**
+     * 开启
+     *
+     * @param order
+     * @return
+     * @throws Exception
+     */
+    int openOrder(Orders order) throws Exception;
+
+    /**
+     * 关闭
+     *
+     * @param order
+     * @return
+     * @throws Exception
+     */
+    int closeOrder(Orders order) throws Exception;
 
 
 }

@@ -53,4 +53,22 @@ public interface ProductService {
      * @throws Exception
      */
     int deleteProduct(String id) throws Exception;
+
+    /**
+     * 开启
+     *
+     * @param product
+     * @return
+     * @throws Exception
+     */
+    int openProduct(Product product) throws Exception;
+
+    /**
+     * 关闭
+     *
+     * @param product
+     * @return
+     * @throws Exception
+     */
+    int closeProduct(Product product) throws Exception;
 }
