@@ -2,6 +2,7 @@ package com.crazycode.controller;
 
 import com.crazycode.pojo.Syslog;
 import com.crazycode.service.SyslogService;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ public class SyslogsController {
      * @return
      * @throws Exception
      */
-    @RequiresRoles("admin")
+    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
     @GetMapping("/findAllSyslogs")
     public ModelAndView findAllSyslogs() throws Exception {
         ModelAndView modelAndView = new ModelAndView("pages/syslog-list");

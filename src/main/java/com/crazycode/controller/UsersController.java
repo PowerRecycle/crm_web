@@ -10,6 +10,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,7 @@ public class UsersController {
      * @return
      * @throws Exception
      */
-    @RequiresRoles(value = {"admin"})
+    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
     @GetMapping("/findAllRoles/{id}")
     public ModelAndView findAllRoles(@PathVariable String id) throws Exception {
         List<Role> allRoles = roleService.findAllRoles();
@@ -87,7 +88,7 @@ public class UsersController {
      * @return
      * @throws Exception
      */
-    @RequiresRoles(value = {"admin"})
+    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
     @PostMapping("/addUser")
     public String addUser(Users users) throws Exception {
         usersService.insertUser(users);
@@ -101,12 +102,14 @@ public class UsersController {
      * @return
      * @throws Exception
      */
-    @RequiresRoles(value = {"admin"})
+    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
     @GetMapping("/userDetails/{id}")
     public ModelAndView userDetails(Users user) throws Exception {
+        System.out.println("111111111111111111111111111111111111userDetailsuserDetails");
         user = usersService.userDetails(user);
         ModelAndView modelAndView = new ModelAndView("pages/user-show1");
         modelAndView.addObject("userDetails", user);
+        System.out.println("222222222222222222222222222222222222userDetailsuserDetails");
         return modelAndView;
     }
 
@@ -119,7 +122,7 @@ public class UsersController {
      * @return
      * @throws Exception
      */
-    @RequiresRoles(value = {"admin"})
+    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
     @GetMapping("/usersList/{pageNum}/{pageSize}")
     public ModelAndView usersList(@PathVariable("pageNum") Integer pageNum, @PathVariable("pageSize") Integer pageSize, HttpSession session) throws Exception {
         PageHelper.startPage(pageNum, pageSize);

@@ -5,6 +5,7 @@ import com.crazycode.service.PermissionService;
 import com.crazycode.service.RoleService;
 import com.crazycode.service.UsersRoleService;
 import com.crazycode.service.UsersService;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +34,7 @@ public class PermissionController {
      * @throws Exception
      */
     @GetMapping("/deletePermission/{id}")
-    @RequiresRoles(value = {"admin"})
+    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
     public String deletePermission(@PathVariable String id) throws Exception {
         Permission permission = new Permission();
         permission.setId(id);
@@ -48,7 +49,7 @@ public class PermissionController {
      * @throws Exception
      */
     @PostMapping("/addPermission")
-    @RequiresRoles(value = {"admin"})
+    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
     public String addPermission(Permission permission) throws Exception {
         permissionService.insertPermission(permission);
         return "redirect:/findAllPermissions";
@@ -61,7 +62,7 @@ public class PermissionController {
      * @throws Exception
      */
     @GetMapping("/findPermissionDetailsById/{id}")
-    @RequiresRoles(value = {"admin"})
+    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
     public ModelAndView findPermissionDetailsById(@PathVariable String id) throws Exception {
         Permission permission = new Permission();
         permission.setId(id);
@@ -78,7 +79,7 @@ public class PermissionController {
      * @throws Exception
      */
     @GetMapping("/findAllPermissions")
-    @RequiresRoles(value = {"admin"})
+    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
     public ModelAndView findAllPermissions() throws Exception {
         List<Permission> permissions = permissionService.findAllPermissions();
         ModelAndView modelAndView = new ModelAndView("pages/permission-list");

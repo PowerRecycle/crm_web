@@ -71,4 +71,19 @@ public interface ProductService {
      * @throws Exception
      */
     int closeProduct(Product product) throws Exception;
+
+    /**
+     * 创建Products索引库
+     *
+     * @throws Exception
+     */
+    void createProductIndex() throws Exception;
+
+    /**
+     * 去索引库中查询短消息
+     *
+     * @return
+     * @throws Exception
+     */
+    List<Product> searchProducts(String queryString) throws Exception;
 }

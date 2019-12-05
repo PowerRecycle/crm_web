@@ -1,18 +1,38 @@
 package com.crazycode;
 
+import com.crazycode.mapper.ProductMapper;
 import com.crazycode.mapper.RoleMapper;
 import com.crazycode.mapper.UsersMapper;
 import com.crazycode.pojo.*;
 import com.crazycode.service.*;
 import com.crazycode.util.MD5Util;
 import lombok.AllArgsConstructor;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 import org.apache.shiro.SecurityUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import javax.sql.DataSource;
+import java.io.File;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -33,6 +53,70 @@ class CrmWebApplicationTests {
     private OrdersService ordersService;
     @Autowired
     private UsersMapper usersMapper;
+    @Autowired
+    private Analyzer analyzer;
+    @Autowired
+    private Directory directory;
+    @Autowired
+    private ProductMapper productMapper;
+    @Autowired
+    private IndexWriter indexWriter;
+
+    @Test
+    void testCreateIndex() throws Exception {
+// 从数据库中读取数据
+        List<Product> products = productMapper.selectAll();
+        //把数据写到索引库中
+        //Document文档的集合,一条记录就封装成一个Document对象
+        List<Document> productList = new ArrayList<>();
+        for (Product product : products) {
+            Document document = new Document();
+            //获取每条记录中的数据
+            String id = product.getId();
+            String cityName = product.getCityName();
+            String departureTime = product.getDepartureTime();
+            String productDesc = product.getProductDesc();
+            String productName = product.getProductName();
+            String productNum = product.getProductNum();
+            Double productPrice = product.getProductPrice();
+            Long productStatus = product.getProductStatus();
+            document.add(new StringField("id", id, Field.Store.YES));
+            document.add(new TextField("cityName", cityName, Field.Store.YES));
+            document.add(new StringField("departureTime", departureTime, Field.Store.YES));
+            document.add(new TextField("productDesc", productDesc, Field.Store.YES));
+            document.add(new TextField("productName", productName, Field.Store.YES));
+            document.add(new TextField("productNum", productNum, Field.Store.YES));
+            document.add(new TextField("productPrice", productPrice.toString(), Field.Store.YES));
+            document.add(new StringField("productStatus", productStatus.toString(), Field.Store.YES));
+            productList.add(document);
+        }
+        //把所有的文档写到索引库
+        indexWriter.addDocuments(productList);
+        indexWriter.commit();
+    }
+
+    @Test
+    void testIndex() throws Exception {
+        String queryString = "西藏";
+
+        //指定索引库的路径
+        // FSDirectory directory = FSDirectory.open(new File("D:\\index").toPath());
+        //创建索引库写入对象,并告知写到哪里,使用指定的配置(分析器,默认使用的是标准分析器StandardAnalyzer)
+        // IndexWriter indexWriter = new IndexWriter(directory, new IndexWriterConfig(new IKAnalyzer()));
+        //以读的方式打开索引库
+        IndexReader indexReader = DirectoryReader.open(directory);
+        //创建索引库查询器对象
+        IndexSearcher indexSearcher = new IndexSearcher(indexReader);
+        QueryParser queryParser = new QueryParser("productName", analyzer);
+        Query query = queryParser.parse(queryString);
+        TopDocs topDocs = indexSearcher.search(query, 20);
+        System.out.println(topDocs.totalHits);
+        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+        for (ScoreDoc scoreDoc : scoreDocs) {
+            System.out.println(scoreDoc);
+        }
+        // ArrayList<Product> products = new ArrayList<>();
+    }
 
     @Test
     void contextLoads10() throws Exception {

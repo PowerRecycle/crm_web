@@ -8,6 +8,7 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,6 +22,16 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductService productService;
+
+    @PostMapping("/queryProduct")
+    @RequiresRoles(value = {"admin", "productManager", "Java开发初级程序员"}, logical = Logical.OR)
+    public ModelAndView queryProduct(String queryString) throws Exception {
+        List<Product> products = productService.searchProducts(queryString);
+        ModelAndView modelAndView = new ModelAndView("pages/product-list1");
+        modelAndView.addObject("products", products);
+        return modelAndView;
+
+    }
 
     /**
      * 添加产品

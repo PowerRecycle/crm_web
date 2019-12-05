@@ -125,6 +125,12 @@
         var $newUrl1, $newUrl2, $form;
         $(function () {
             $form = $("#myForm");
+            $("#checkDelete1").click(function () {
+                $form.submit();
+            })
+            $("#checkDelete2").click(function () {
+                $form.submit();
+            })
             $newUrl1 = "${pageContext.request.contextPath}/openProducts";
             $("#checkOpen1").click(function () {
                 $form.attr("action", $newUrl1);
@@ -179,48 +185,53 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">列表</h3>
                 </div>
-                <form action="${pageContext.request.contextPath}/deleteProducts" method="post" id="myForm">
-                    <div class="box-body">
-                        <!-- 数据表格 -->
-                        <div class="table-box">
-                            <!--工具栏-->
-                            <div class="pull-left">
-                                <div class="form-group form-inline">
-                                    <div class="btn-group">
-                                        <shiro:hasPermission name="product:add">
-                                            <button type="button" class="btn btn-default" title="新建"
-                                                    onclick="location.href='${pageContext.request.contextPath}/pages/product-add.jsp'">
-                                                <i class="fa fa-file-o"></i> 新建
-                                            </button>
-                                        </shiro:hasPermission>
-                                        <shiro:hasPermission name="product:delete">
-                                            <button type="submit" class="btn btn-default" title="删除"><i
-                                                    class="fa fa-trash-o"></i> 删除
-                                            </button>
-                                        </shiro:hasPermission>
-                                        <button type="button" class="btn btn-default" title="开启" id="checkOpen1"><i
-                                                class="fa fa-check"></i>
-                                            开启
+                <div class="box-body">
+                    <!-- 数据表格 -->
+                    <div class="table-box">
+                        <!--工具栏-->
+                        <div class="pull-left">
+                            <div class="form-group form-inline">
+                                <div class="btn-group">
+                                    <shiro:hasPermission name="product:add">
+                                        <button type="button" class="btn btn-default" title="新建"
+                                                onclick="location.href='${pageContext.request.contextPath}/pages/product-add.jsp'">
+                                            <i class="fa fa-file-o"></i> 新建
                                         </button>
-                                        <button type="button" class="btn btn-default" title="屏蔽" id="checkClose1"><i
-                                                class="fa fa-ban"></i>
-                                            屏蔽
+                                    </shiro:hasPermission>
+                                    <shiro:hasPermission name="product:delete">
+                                        <button type="button" class="btn btn-default" title="删除" id="checkDelete1"><i
+                                                class="fa fa-trash-o"></i> 删除
                                         </button>
-                                        <button type="button" class="btn btn-default" title="刷新"
-                                                onclick="location.reload()"><i
-                                                class="fa fa-refresh"></i> 刷新
-                                        </button>
-                                    </div>
+                                    </shiro:hasPermission>
+                                    <button type="button" class="btn btn-default" title="开启" id="checkOpen1"><i
+                                            class="fa fa-check"></i>
+                                        开启
+                                    </button>
+                                    <button type="button" class="btn btn-default" title="屏蔽" id="checkClose1"><i
+                                            class="fa fa-ban"></i>
+                                        屏蔽
+                                    </button>
+                                    <button type="button" class="btn btn-default" title="刷新"
+                                            onclick="location.reload()"><i
+                                            class="fa fa-refresh"></i> 刷新
+                                    </button>
                                 </div>
                             </div>
-                            <div class="box-tools pull-right">
-                                <div class="has-feedback">
-                                    <input type="text" class="form-control input-sm" placeholder="搜索">
-                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                                </div>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <div class="has-feedback">
+                                <form action="${pageContext.request.contextPath}/queryProduct"
+                                      method="post">
+                                    <input type="text" class="form-control input-sm" placeholder="搜索"
+                                           name="queryString">
+                                    <%--                                    <input type="submit" value="111">--%>
+                                </form>
+                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
                             </div>
-                            <!--工具栏/-->
-                            <!--数据列表-->
+                        </div>
+                        <!--工具栏/-->
+                        <!--数据列表-->
+                        <form action="${pageContext.request.contextPath}/deleteProducts" method="post" id="myForm">
                             <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
                                 <thead>
                                 <tr>
@@ -270,8 +281,8 @@
                                             </button>
                                         </shiro:hasPermission>
                                         <shiro:hasPermission name="product:delete">
-                                            <button type="submit" class="btn btn-default" title="删除"><i
-                                                    class="fa fa-trash-o"></i> 删除
+                                            <button type="button" class="btn btn-default" title="删除" id="checkDelete2">
+                                                <i class="fa fa-trash-o"></i> 删除
                                             </button>
                                         </shiro:hasPermission>
                                         <button type="button" class="btn btn-default" title="开启" id="checkOpen2"><i
@@ -296,10 +307,10 @@
                                 </div>
                             </div>
                             <!--工具栏/-->
-                        </div>
-                        <!-- 数据表格 /-->
+                        </form>
                     </div>
-                </form>
+                    <!-- 数据表格 /-->
+                </div>
                 <!-- /.box-body -->
                 <!-- .box-footer-->
                 <div class="box-footer">
