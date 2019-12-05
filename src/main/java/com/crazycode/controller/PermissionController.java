@@ -34,7 +34,7 @@ public class PermissionController {
      * @throws Exception
      */
     @GetMapping("/deletePermission/{id}")
-    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
+    @RequiresRoles("admin")
     public String deletePermission(@PathVariable String id) throws Exception {
         Permission permission = new Permission();
         permission.setId(id);
@@ -49,7 +49,7 @@ public class PermissionController {
      * @throws Exception
      */
     @PostMapping("/addPermission")
-    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
+    @RequiresRoles("admin")
     public String addPermission(Permission permission) throws Exception {
         permissionService.insertPermission(permission);
         return "redirect:/findAllPermissions";
@@ -62,7 +62,7 @@ public class PermissionController {
      * @throws Exception
      */
     @GetMapping("/findPermissionDetailsById/{id}")
-    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
+    @RequiresRoles("admin")
     public ModelAndView findPermissionDetailsById(@PathVariable String id) throws Exception {
         Permission permission = new Permission();
         permission.setId(id);
@@ -79,7 +79,7 @@ public class PermissionController {
      * @throws Exception
      */
     @GetMapping("/findAllPermissions")
-    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
+    @RequiresRoles("admin")
     public ModelAndView findAllPermissions() throws Exception {
         List<Permission> permissions = permissionService.findAllPermissions();
         ModelAndView modelAndView = new ModelAndView("pages/permission-list");

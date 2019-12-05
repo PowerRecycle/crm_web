@@ -68,9 +68,9 @@ public class LogAdvise {
         System.out.println("释放日志资源....");
     }
 
-    @AfterThrowing("p1()")
+    /*@AfterThrowing("p1()")
     public void AfterThrowing() throws Exception {
         System.out.println("异常通知[After throwing advice]]:在业务方法抛出异常的时候要执行的功能");
         System.out.println("日志记录异常信息....");
-    }
+    }*/
 }

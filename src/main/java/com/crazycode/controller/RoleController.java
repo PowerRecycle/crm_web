@@ -34,7 +34,7 @@ public class RoleController {
      * @throws Exception
      */
     @PostMapping("/addPermissionToRole")
-    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
+    @RequiresRoles("admin")
     public String addPermissionToRole(@RequestParam(value = "ids") List<String> ids, String roleId) throws Exception {
         RolePermission rolePermission = new RolePermission();
         rolePermission.setRoleId(roleId);
@@ -56,7 +56,7 @@ public class RoleController {
      * @throws Exception
      */
     @GetMapping("/findRoleByIdAndAllPermission/{id}")
-    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
+    @RequiresRoles("admin")
     public ModelAndView findRoleByIdAndAllPermission(@PathVariable String id) throws Exception {
         Role role = new Role();
         role.setId(id);
@@ -75,7 +75,7 @@ public class RoleController {
      * @throws Exception
      */
     @GetMapping("/deleteRole/{id}")
-    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
+    @RequiresRoles("admin")
     public String deleteRole(@PathVariable String id) throws Exception {
         Role role = new Role();
         role.setId(id);
@@ -91,7 +91,7 @@ public class RoleController {
      * @throws Exception
      */
     @PostMapping("/addRole")
-    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
+    @RequiresRoles("admin")
     public String addRole(Role role) throws Exception {
         roleService.insertRole(role);
         return "redirect:/findAllRoles2";
@@ -104,7 +104,7 @@ public class RoleController {
      * @throws Exception
      */
     @GetMapping("/findRoleDetailsById/{id}")
-    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
+    @RequiresRoles("admin")
     public ModelAndView findRoleDetailsById(@PathVariable String id) throws Exception {
         Role role = new Role();
         role.setId(id);
@@ -121,7 +121,7 @@ public class RoleController {
      * @throws Exception
      */
     @GetMapping("/findAllRoles2")
-    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
+    @RequiresRoles("admin")
     public ModelAndView findAllRoles2() throws Exception {
         List<Role> allRoles = roleService.findAllRoles();
         ModelAndView modelAndView = new ModelAndView("pages/role-list");

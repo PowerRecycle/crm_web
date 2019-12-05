@@ -69,7 +69,7 @@ public class UsersController {
      * @return
      * @throws Exception
      */
-    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
+    @RequiresRoles("admin")
     @GetMapping("/findAllRoles/{id}")
     public ModelAndView findAllRoles(@PathVariable String id) throws Exception {
         List<Role> allRoles = roleService.findAllRoles();
@@ -88,7 +88,7 @@ public class UsersController {
      * @return
      * @throws Exception
      */
-    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
+    @RequiresRoles("admin")
     @PostMapping("/addUser")
     public String addUser(Users users) throws Exception {
         usersService.insertUser(users);
@@ -102,7 +102,7 @@ public class UsersController {
      * @return
      * @throws Exception
      */
-    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
+    @RequiresRoles("admin")
     @GetMapping("/userDetails/{id}")
     public ModelAndView userDetails(Users user) throws Exception {
         System.out.println("111111111111111111111111111111111111userDetailsuserDetails");
@@ -122,7 +122,7 @@ public class UsersController {
      * @return
      * @throws Exception
      */
-    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
+    @RequiresRoles("admin")
     @GetMapping("/usersList/{pageNum}/{pageSize}")
     public ModelAndView usersList(@PathVariable("pageNum") Integer pageNum, @PathVariable("pageSize") Integer pageSize, HttpSession session) throws Exception {
         PageHelper.startPage(pageNum, pageSize);

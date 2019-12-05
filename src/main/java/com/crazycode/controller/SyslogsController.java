@@ -25,7 +25,7 @@ public class SyslogsController {
      * @return
      * @throws Exception
      */
-    @RequiresRoles(value = {"admin"}, logical = Logical.OR)
+    @RequiresRoles("admin")
     @GetMapping("/findAllSyslogs")
     public ModelAndView findAllSyslogs() throws Exception {
         ModelAndView modelAndView = new ModelAndView("pages/syslog-list");
